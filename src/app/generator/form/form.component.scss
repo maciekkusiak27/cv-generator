@@ -1,0 +1,13 @@
+.form-container{
+    display: flex;
+    width: 100%;
+    height: 100%;
+    mat-form-field {
+        width: 100%;
+        margin-bottom: 16px;
+      }
+      
+      button {
+        margin-top: 20px;
+      }
+}
