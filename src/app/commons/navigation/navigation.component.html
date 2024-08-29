@@ -1,11 +1,17 @@
-<nav class="bg-indigo-900 text-white py-8 px-6 flex items-center justify-between">
-    <button (click)="navigateBack()" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded-lg transition duration-300 ease-in-out flex items-center justify-center">
-      <i class="fas fa-arrow-left"></i> 
-    </button>
-    <h1 class="text-2xl font-bold mx-4">Generator CV</h1>
-    <span>
-        <i class="fa-solid fa-file-import mx-2 cursor-pointer"></i>
-        <i class="fa-solid fa-circle-half-stroke mx-2 cursor-pointer"></i>
-    </span> 
-  </nav>
-  
+<nav
+  class="bg-indigo-900 text-white py-8 px-6 flex items-center justify-between"
+>
+  <button
+    (click)="navigateBack()"
+    class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded-lg transition duration-300 ease-in-out flex items-center justify-center"
+  >
+    <i class="fas fa-arrow-left"></i>
+  </button>
+  <h1 class="text-2xl font-bold mx-4">Generator CV</h1>
+  <span>
+    <i *ngIf="formStep===1" class="fa-solid fa-file-import mx-2 cursor-pointer" (click)="triggerFileInput()"></i>
+    <!-- <i class="fa-solid fa-circle-half-stroke mx-2 cursor-pointer"></i> -->
+    
+    <input type="file" id="fileInput" (change)="onFileChange($event)" style="display: none;" />
+</span>
+</nav>

@@ -5,9 +5,22 @@ import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
   providedIn: 'root'
 })
 export class FormService {
+  private form!: FormGroup;
+
   constructor(private fb: FormBuilder) {}
 
   createForm(): FormGroup {
+    return this.fb.group({
+      contactInfo: this.createContactInfo(),
+      languages: this.fb.array([this.createLanguage()]),
+      experience: this.fb.array([this.createExperience()]),
+      education: this.fb.array([this.createEducation()]),
+      courses: this.fb.array([this.createCourse()]),
+      projects: this.fb.array([this.createProject()])
+    });
+  }
+
+  createContactInfo(): FormGroup {
     return this.fb.group({
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
@@ -17,13 +30,49 @@ export class FormService {
       location: ['', Validators.required],
       github: [''],
       linkedin: [''],
+      website: [''],
       image: [null],
-      languages: this.fb.array([this.createLanguage()]),
-      experience: this.fb.array([this.createExperience()]),
-      education: this.fb.array([this.createEducation()]),
-      courses: this.fb.array([this.createCourse()]),
-      projects: this.fb.array([this.createProject()])
     });
+  }
+
+  populateForm(data: any): void {
+    if (this.form) {
+      this.form.patchValue({
+        contactInfo: {
+          firstName: data.firstName || '',
+          lastName: data.lastName || '',
+          email: data.email || '',
+          position: data.position || '',
+          phone: data.phone || '',
+          location: data.location || '',
+          github: data.github || '',
+          linkedin: data.linkedin || '',
+          website: data.website || '',
+          image: data.image || null,
+        },
+      });
+
+      this.setFormArray('languages', data.languages, this.createLanguage.bind(this));
+      this.setFormArray('experience', data.experience, this.createExperience.bind(this));
+      this.setFormArray('education', data.education, this.createEducation.bind(this));
+      this.setFormArray('courses', data.courses, this.createCourse.bind(this));
+      this.setFormArray('projects', data.projects, this.createProject.bind(this));
+    }
+  }
+
+  private setFormArray(controlName: string, values: any[], createFn: () => FormGroup): void {
+    const formArray = this.form.get(controlName) as FormArray;
+    formArray.clear();
+
+    if (values && values.length) {
+      values.forEach(value => {
+        const group = createFn();
+        group.patchValue(value);
+        formArray.push(group);
+      });
+    } else {
+      formArray.push(createFn());
+    }
   }
 
   createLanguage(): FormGroup {
@@ -68,6 +117,10 @@ export class FormService {
       description: [''],
       link: ['']
     });
+  }
+
+  getContactInfo(form: FormGroup): FormGroup {
+    return form.get('contactInfo') as FormGroup;
   }
 
   getExperienceArray(form: FormGroup): FormArray {

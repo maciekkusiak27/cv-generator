@@ -1,5 +1,5 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { FormGroup, ReactiveFormsModule, FormArray, FormBuilder, Validators } from '@angular/forms';
+import { FormGroup, ReactiveFormsModule, FormArray} from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { FormService } from '../../services/form.service';
 
@@ -15,13 +15,18 @@ import { FormService } from '../../services/form.service';
 })
 export class FormComponent implements OnInit {
   @Output() formData = new EventEmitter<any>();
+  @Output() formSaved = new EventEmitter<void>();
+  @Output() changeStep = new EventEmitter<number>();
+
   form: FormGroup;
+  
 
   constructor(private formService: FormService) {
     this.form = this.formService.createForm();
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+  }
 
   get experience(): FormArray {
     return this.formService.getExperienceArray(this.form);
@@ -41,6 +46,10 @@ export class FormComponent implements OnInit {
 
   get projects(): FormArray {
     return this.formService.getProjectsArray(this.form);
+  }
+
+  saveForm() {
+    this.formSaved.emit();
   }
 
   addExperience(): void {
@@ -64,9 +73,10 @@ export class FormComponent implements OnInit {
   }
 
   onSubmit(): void {
-    console.log(this.form.value);
-    // Emit the form data if needed
-    this.formData.emit(this.form.value);
+    if (this.form.valid) {
+      this.formData.emit(this.form.value);
+      this.changeStep.emit(2);  
+    }
   }
 
   removeLanguage(index: number): void {

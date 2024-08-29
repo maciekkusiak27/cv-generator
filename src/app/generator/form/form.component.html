@@ -1,77 +1,179 @@
-<form [formGroup]="form" (ngSubmit)="onSubmit()" class="space-y-8 p-6 max-w-4xl mx-auto">
-  <!-- General Information Section -->
-  <h4 class="text-xl font-semibold mb-4">General Information</h4>
-  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+<form
+  [formGroup]="form"
+  (ngSubmit)="onSubmit()"
+  class="space-y8 p-6 max-w-4xl mx-auto"
+>
+  <!-- Contact Information Section -->
+  <h4 class="text-xl font-semibold mb-4">Contact Information</h4>
+  <div formGroupName="contactInfo" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
     <!-- Add input fields for general information -->
-    <div class="form-group" *ngFor="let field of ['firstName', 'lastName', 'email', 'position', 'phone', 'location', 'github', 'linkedin']">
-      <label [for]="field" class="block text-sm font-medium text-gray-700">{{ field | titlecase }}</label>
-      <input [id]="field" [formControlName]="field" [type]="field === 'email' ? 'email' : 'text'" 
-             [placeholder]="field | titlecase" 
-             class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"/>
-      <p *ngIf="form.get(field)?.invalid && form.get(field)?.touched" class="text-red-500 text-sm">
+    <div
+      class="form-group"
+      *ngFor="
+        let field of [
+          'firstName',
+          'lastName',
+          'email',
+          'position',
+          'phone',
+          'location',
+          'github',
+          'linkedin',
+          'website'
+        ]
+      "
+    >
+      <label [for]="field" class="block text-sm font-medium text-gray-700">{{
+        field | titlecase
+      }}</label>
+      <input
+        [id]="field"
+        [formControlName]="field"
+        [type]="field === 'email' ? 'email' : 'text'"
+        [placeholder]="field | titlecase"
+        class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+      />
+      <p
+        *ngIf="
+          form.get('contactInfo')?.get(field)?.invalid &&
+          form.get('contactInfo')?.get(field)?.touched
+        "
+        class="text-red-500 text-sm"
+      >
         {{ field | titlecase }} is required
       </p>
     </div>
 
-    <div class="form-group">
-      <label class="block text-sm font-medium text-gray-700">Upload Image</label>
-      <input type="file" (change)="onFileChange($event)" 
-             class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500"/>
+    <div class="form-group col-span-full">
+      <label class="block text-sm font-medium text-gray-700"
+        >Upload Image</label
+      >
+      <input
+        type="file"
+        (change)="onFileChange($event)"
+        class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+      />
     </div>
   </div>
 
   <!-- Experience Section -->
   <h4 class="text-xl font-semibold mt-8 mb-4">Experience</h4>
   <div formArrayName="experience" class="space-y-4">
-    <div *ngFor="let exp of experience.controls; let i = index" [formGroupName]="i" class="space-y-4 relative">
-      <button type="button" (click)="removeExperience(i)" 
-              class="absolute top-0 right-0 mt-2 mr-2 text-red-600 hover:text-red-800">
+    <div
+      *ngFor="let exp of experience.controls; let i = index"
+      [formGroupName]="i"
+      class="space-y-4 relative"
+    >
+      <button
+        type="button"
+        (click)="removeExperience(i)"
+        class="absolute top-0 right-0 mt-2 mr-2 text-red-600 hover:text-red-800"
+      >
         <i class="fa fa-times"></i>
       </button>
       <!-- Experience fields -->
       <div class="form-group">
-        <label for="companyName-{{i}}" class="block text-sm font-medium text-gray-700">Company Name</label>
-        <input id="companyName-{{i}}" formControlName="companyName" type="text" placeholder="Company Name" 
-               class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"/>
+        <label
+          for="companyName-{{ i }}"
+          class="block text-sm font-medium text-gray-700"
+          >Company Name</label
+        >
+        <input
+          id="companyName-{{ i }}"
+          formControlName="companyName"
+          type="text"
+          placeholder="Company Name"
+          class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+        />
       </div>
 
       <div class="form-group">
-        <label for="position-{{i}}" class="block text-sm font-medium text-gray-700">Position</label>
-        <input id="position-{{i}}" formControlName="position" type="text" placeholder="Position" 
-               class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"/>
+        <label
+          for="position-{{ i }}"
+          class="block text-sm font-medium text-gray-700"
+          >Position</label
+        >
+        <input
+          id="position-{{ i }}"
+          formControlName="position"
+          type="text"
+          placeholder="Position"
+          class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+        />
       </div>
 
       <div class="form-group">
-        <label for="fromDate-{{i}}" class="block text-sm font-medium text-gray-700">From</label>
-        <input id="fromDate-{{i}}" formControlName="fromDate" type="date" 
-               class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"/>
+        <label
+          for="fromDate-{{ i }}"
+          class="block text-sm font-medium text-gray-700"
+          >From</label
+        >
+        <input
+          id="fromDate-{{ i }}"
+          formControlName="fromDate"
+          type="date"
+          class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+        />
       </div>
 
       <div class="form-group">
-        <label for="toDate-{{i}}" class="block text-sm font-medium text-gray-700">To</label>
-        <input id="toDate-{{i}}" formControlName="toDate" type="date" 
-               [attr.disabled]="experience.at(i).get('currently')?.value ? true : null"
-               class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"/>
-        <input *ngIf="experience.at(i).get('currently')?.value" type="hidden" formControlName="toDate" value="current"/>
+        <label
+          for="toDate-{{ i }}"
+          class="block text-sm font-medium text-gray-700"
+          >To</label
+        >
+        <input
+          id="toDate-{{ i }}"
+          formControlName="toDate"
+          type="date"
+          [attr.disabled]="
+            experience.at(i).get('currently')?.value ? true : null
+          "
+          class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+        />
+        <input
+          *ngIf="experience.at(i).get('currently')?.value"
+          type="hidden"
+          formControlName="toDate"
+          value="current"
+        />
       </div>
 
       <div class="form-group">
-        <label for="currently-{{i}}" class="inline-flex items-center">
-          <input id="currently-{{i}}" formControlName="currently" type="checkbox" 
-                 (change)="onCurrentlyChange(i)" 
-                 class="h-4 w-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500"/>
-          <span class="ml-2 text-sm font-medium text-gray-700">Currently Working</span>
+        <label for="currently-{{ i }}" class="inline-flex items-center">
+          <input
+            id="currently-{{ i }}"
+            formControlName="currently"
+            type="checkbox"
+            (change)="onCurrentlyChange(i)"
+            class="h-4 w-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500"
+          />
+          <span class="ml-2 text-sm font-medium text-gray-700"
+            >Currently Working</span
+          >
         </label>
       </div>
 
       <div class="form-group">
-        <label for="description-{{i}}" class="block text-sm font-medium text-gray-700">Description</label>
-        <textarea id="description-{{i}}" formControlName="description" rows="3" placeholder="Job Description" 
-                  class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"></textarea>
+        <label
+          for="description-{{ i }}"
+          class="block text-sm font-medium text-gray-700"
+          >Description</label
+        >
+        <textarea
+          id="description-{{ i }}"
+          formControlName="description"
+          rows="3"
+          placeholder="Job Description"
+          class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+        ></textarea>
       </div>
     </div>
-    <button type="button" (click)="addExperience()" 
-            class="px-4 py-2 bg-indigo-600 text-white rounded-md shadow-sm hover:bg-indigo-700">
+    <button
+      type="button"
+      (click)="addExperience()"
+      class="px-4 py-2 bg-indigo-600 text-white rounded-md shadow-sm hover:bg-indigo-700"
+    >
       Add Experience
     </button>
   </div>
@@ -79,50 +181,112 @@
   <!-- Education Section -->
   <h4 class="text-xl font-semibold mt-8 mb-4">Education</h4>
   <div formArrayName="education" class="space-y-4">
-    <div *ngFor="let edu of education.controls; let i = index" [formGroupName]="i" class="space-y-4 relative">
-      <button type="button" (click)="removeEducation(i)" 
-              class="absolute top-0 right-0 mt-2 mr-2 text-red-600 hover:text-red-800">
+    <div
+      *ngFor="let edu of education.controls; let i = index"
+      [formGroupName]="i"
+      class="space-y-4 relative"
+    >
+      <button
+        type="button"
+        (click)="removeEducation(i)"
+        class="absolute top-0 right-0 mt-2 mr-2 text-red-600 hover:text-red-800"
+      >
         <i class="fa fa-times"></i>
       </button>
       <!-- Education fields -->
       <div class="form-group">
-        <label for="institution-{{i}}" class="block text-sm font-medium text-gray-700">Institution</label>
-        <input id="institution-{{i}}" formControlName="institution" type="text" placeholder="Institution" 
-               class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"/>
+        <label
+          for="institution-{{ i }}"
+          class="block text-sm font-medium text-gray-700"
+          >Institution</label
+        >
+        <input
+          id="institution-{{ i }}"
+          formControlName="institution"
+          type="text"
+          placeholder="Institution"
+          class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+        />
       </div>
 
       <div class="form-group">
-        <label for="degree-{{i}}" class="block text-sm font-medium text-gray-700">Degree</label>
-        <input id="degree-{{i}}" formControlName="degree" type="text" placeholder="Degree" 
-               class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"/>
+        <label
+          for="degree-{{ i }}"
+          class="block text-sm font-medium text-gray-700"
+          >Degree</label
+        >
+        <input
+          id="degree-{{ i }}"
+          formControlName="degree"
+          type="text"
+          placeholder="Degree"
+          class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+        />
       </div>
 
       <div class="form-group">
-        <label for="fieldOfStudy-{{i}}" class="block text-sm font-medium text-gray-700">Field of Study</label>
-        <input id="fieldOfStudy-{{i}}" formControlName="fieldOfStudy" type="text" placeholder="Field of Study" 
-               class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"/>
+        <label
+          for="fieldOfStudy-{{ i }}"
+          class="block text-sm font-medium text-gray-700"
+          >Field of Study</label
+        >
+        <input
+          id="fieldOfStudy-{{ i }}"
+          formControlName="fieldOfStudy"
+          type="text"
+          placeholder="Field of Study"
+          class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+        />
       </div>
 
       <div class="form-group">
-        <label for="startDate-{{i}}" class="block text-sm font-medium text-gray-700">Start Date</label>
-        <input id="startDate-{{i}}" formControlName="startDate" type="date" 
-               class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"/>
+        <label
+          for="startDate-{{ i }}"
+          class="block text-sm font-medium text-gray-700"
+          >Start Date</label
+        >
+        <input
+          id="startDate-{{ i }}"
+          formControlName="startDate"
+          type="date"
+          class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+        />
       </div>
 
       <div class="form-group">
-        <label for="endDate-{{i}}" class="block text-sm font-medium text-gray-700">End Date</label>
-        <input id="endDate-{{i}}" formControlName="endDate" type="date" 
-               class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"/>
+        <label
+          for="endDate-{{ i }}"
+          class="block text-sm font-medium text-gray-700"
+          >End Date</label
+        >
+        <input
+          id="endDate-{{ i }}"
+          formControlName="endDate"
+          type="date"
+          class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+        />
       </div>
 
       <div class="form-group">
-        <label for="description-{{i}}" class="block text-sm font-medium text-gray-700">Description</label>
-        <textarea id="description-{{i}}" formControlName="description" rows="3" placeholder="Description" 
-                  class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"></textarea>
+        <label
+          for="description-{{ i }}"
+          class="block text-sm font-medium text-gray-700"
+          >Description</label
+        >
+        <textarea
+          id="description-{{ i }}"
+          formControlName="description"
+          rows="3"
+          placeholder="Description"
+          class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+        ></textarea>
       </div>
     </div>
-    <button type="button" (click)="addEducation()" 
-            class="px-4 py-2 bg-indigo-600 text-white rounded-md shadow-sm hover:bg-indigo-700">
+    <button
+      type="button"
+      (click)="addEducation()"
+      class="px-4 py-2 bg-indigo-600 text-white rounded-md shadow-sm hover:bg-indigo-700"
+    >
       Add Education
     </button>
   </div>
@@ -130,26 +294,54 @@
   <!-- Courses Section -->
   <h4 class="text-xl font-semibold mt-8 mb-4">Courses</h4>
   <div formArrayName="courses" class="space-y-4">
-    <div *ngFor="let course of courses.controls; let i = index" [formGroupName]="i" class="space-y-4 relative">
-      <button type="button" (click)="removeCourse(i)" 
-              class="absolute top-0 right-0 mt-2 mr-2 text-red-600 hover:text-red-800">
+    <div
+      *ngFor="let course of courses.controls; let i = index"
+      [formGroupName]="i"
+      class="space-y-4 relative"
+    >
+      <button
+        type="button"
+        (click)="removeCourse(i)"
+        class="absolute top-0 right-0 mt-2 mr-2 text-red-600 hover:text-red-800"
+      >
         <i class="fa fa-times"></i>
       </button>
       <!-- Courses fields -->
       <div class="form-group">
-        <label for="course-{{i}}" class="block text-sm font-medium text-gray-700">Course</label>
-        <input id="course-{{i}}" formControlName="course" type="text" placeholder="Course" 
-               class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"/>
+        <label
+          for="course-{{ i }}"
+          class="block text-sm font-medium text-gray-700"
+          >Course</label
+        >
+        <input
+          id="course-{{ i }}"
+          formControlName="course"
+          type="text"
+          placeholder="Course"
+          class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+        />
       </div>
 
       <div class="form-group">
-        <label for="description-{{i}}" class="block text-sm font-medium text-gray-700">Description</label>
-        <textarea id="description-{{i}}" formControlName="description" rows="3" placeholder="Description" 
-                  class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"></textarea>
+        <label
+          for="description-{{ i }}"
+          class="block text-sm font-medium text-gray-700"
+          >Description</label
+        >
+        <textarea
+          id="description-{{ i }}"
+          formControlName="description"
+          rows="3"
+          placeholder="Description"
+          class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+        ></textarea>
       </div>
     </div>
-    <button type="button" (click)="addCourse()" 
-            class="px-4 py-2 bg-indigo-600 text-white rounded-md shadow-sm hover:bg-indigo-700">
+    <button
+      type="button"
+      (click)="addCourse()"
+      class="px-4 py-2 bg-indigo-600 text-white rounded-md shadow-sm hover:bg-indigo-700"
+    >
       Add Course
     </button>
   </div>
@@ -157,32 +349,69 @@
   <!-- Projects Section -->
   <h4 class="text-xl font-semibold mt-8 mb-4">Projects</h4>
   <div formArrayName="projects" class="space-y-4">
-    <div *ngFor="let project of projects.controls; let i = index" [formGroupName]="i" class="space-y-4 relative">
-      <button type="button" (click)="removeProject(i)" 
-              class="absolute top-0 right-0 mt-2 mr-2 text-red-600 hover:text-red-800">
+    <div
+      *ngFor="let project of projects.controls; let i = index"
+      [formGroupName]="i"
+      class="space-y-4 relative"
+    >
+      <button
+        type="button"
+        (click)="removeProject(i)"
+        class="absolute top-0 right-0 mt-2 mr-2 text-red-600 hover:text-red-800"
+      >
         <i class="fa fa-times"></i>
       </button>
       <!-- Projects fields -->
       <div class="form-group">
-        <label for="project-{{i}}" class="block text-sm font-medium text-gray-700">Project</label>
-        <input id="project-{{i}}" formControlName="project" type="text" placeholder="Project" 
-               class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"/>
+        <label
+          for="project-{{ i }}"
+          class="block text-sm font-medium text-gray-700"
+          >Project</label
+        >
+        <input
+          id="project-{{ i }}"
+          formControlName="project"
+          type="text"
+          placeholder="Project"
+          class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+        />
       </div>
 
       <div class="form-group">
-        <label for="description-{{i}}" class="block text-sm font-medium text-gray-700">Description</label>
-        <textarea id="description-{{i}}" formControlName="description" rows="3" placeholder="Description" 
-                  class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"></textarea>
+        <label
+          for="description-{{ i }}"
+          class="block text-sm font-medium text-gray-700"
+          >Description</label
+        >
+        <textarea
+          id="description-{{ i }}"
+          formControlName="description"
+          rows="3"
+          placeholder="Description"
+          class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+        ></textarea>
       </div>
 
       <div class="form-group">
-        <label for="link-{{i}}" class="block text-sm font-medium text-gray-700">Link</label>
-        <input id="link-{{i}}" formControlName="link" type="text" placeholder="Link" 
-               class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"/>
+        <label
+          for="link-{{ i }}"
+          class="block text-sm font-medium text-gray-700"
+          >Link</label
+        >
+        <input
+          id="link-{{ i }}"
+          formControlName="link"
+          type="text"
+          placeholder="Link"
+          class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+        />
       </div>
     </div>
-    <button type="button" (click)="addProject()" 
-            class="px-4 py-2 bg-indigo-600 text-white rounded-md shadow-sm hover:bg-indigo-700">
+    <button
+      type="button"
+      (click)="addProject()"
+      class="px-4 py-2 bg-indigo-600 text-white rounded-md shadow-sm hover:bg-indigo-700"
+    >
       Add Project
     </button>
   </div>
@@ -190,35 +419,72 @@
   <!-- Languages Section -->
   <h4 class="text-xl font-semibold mt-8 mb-4">Languages</h4>
   <div formArrayName="languages" class="space-y-4">
-    <div *ngFor="let language of languages.controls; let i = index" [formGroupName]="i" class="space-y-4 relative">
-      <button type="button" (click)="removeLanguage(i)" 
-              class="absolute top-0 right-0 mt-2 mr-2 text-red-600 hover:text-red-800">
+    <div
+      *ngFor="let language of languages.controls; let i = index"
+      [formGroupName]="i"
+      class="space-y-4 relative"
+    >
+      <button
+        type="button"
+        (click)="removeLanguage(i)"
+        class="absolute top-0 right-0 mt-2 mr-2 text-red-600 hover:text-red-800"
+      >
         <i class="fa fa-times"></i>
       </button>
       <!-- Languages fields -->
       <div class="form-group">
-        <label for="language-{{i}}" class="block text-sm font-medium text-gray-700">Language</label>
-        <input id="language-{{i}}" formControlName="language" type="text" placeholder="Language" 
-               class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"/>
+        <label
+          for="language-{{ i }}"
+          class="block text-sm font-medium text-gray-700"
+          >Language</label
+        >
+        <input
+          id="language-{{ i }}"
+          formControlName="language"
+          type="text"
+          placeholder="Language"
+          class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+        />
       </div>
 
       <div class="form-group">
-        <label for="level-{{i}}" class="block text-sm font-medium text-gray-700">Level</label>
-        <input id="level-{{i}}" formControlName="level" type="text" placeholder="Level" 
-               class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"/>
+        <label
+          for="level-{{ i }}"
+          class="block text-sm font-medium text-gray-700"
+          >Level</label
+        >
+        <input
+          id="level-{{ i }}"
+          formControlName="level"
+          type="text"
+          placeholder="Level"
+          class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+        />
       </div>
     </div>
-    <button type="button" (click)="addLanguage()" 
-            class="px-4 py-2 bg-indigo-600 text-white rounded-md shadow-sm hover:bg-indigo-700">
+    <button
+      type="button"
+      (click)="addLanguage()"
+      class="px-4 py-2 bg-indigo-600 text-white rounded-md shadow-sm hover:bg-indigo-700"
+    >
       Add Language
     </button>
   </div>
 
   <!-- Submit Button -->
   <div class="mt-8">
-    <button type="submit" 
-            class="px-4 py-2 bg-indigo-600 text-white rounded-md shadow-sm hover:bg-indigo-700">
+    <button
+      type="submit"
+      class="px-4 py-2 bg-indigo-600 text-white rounded-md shadow-sm hover:bg-indigo-700"
+    >
       Submit
+    </button>
+    <button
+      type="button"
+      class="bg-orange-500 text-white py-2 px-4 rounded ml-2"
+      (click)="saveForm()"
+    >
+      Save form
     </button>
   </div>
 </form>
