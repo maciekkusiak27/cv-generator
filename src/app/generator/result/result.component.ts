@@ -2,43 +2,40 @@ import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import html2canvas from 'html2canvas';
 import { jsPDF } from 'jspdf';
-
+import { FormData } from '../../constants/types';
 
 @Component({
   selector: 'app-result',
   standalone: true,
   imports: [CommonModule],
   templateUrl: './result.component.html',
-  styleUrl: './result.component.scss'
+  styleUrls: ['./result.component.scss'],
 })
 export class ResultComponent {
-  @Input() formData: any;
+  @Input() formData!: FormData;
   @Output() changeStep = new EventEmitter<number>();
+  @Output() formSaved = new EventEmitter<void>();
+  @Output() formDataChange = new EventEmitter<FormData>(); 
 
-  editForm() {
-    this.changeStep.emit(1); 
+  public editForm(): void {
+    this.formDataChange.emit(this.formData);
+    this.changeStep.emit(1);
   }
 
-  saveAsJSON() {
-    const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(this.formData));
-    const downloadAnchor = document.createElement('a');
-    downloadAnchor.setAttribute("href", dataStr);
-    downloadAnchor.setAttribute("download", `${this.formData.lastName}-dane-cv.json`);
-    document.body.appendChild(downloadAnchor); 
-    downloadAnchor.click();
-    downloadAnchor.remove();
-  }
+ngOnInit(){
+  console.log(this.formData)
+}
 
-  generatePDF() {
+  public generatePDF(): void {
     const pdf = new jsPDF();
     const element = document.getElementById('pdf-content');
 
     if (element) {
-      html2canvas(element).then(canvas => {
+      html2canvas(element).then((canvas) => {
         const imgData = canvas.toDataURL('image/png');
-        const imgWidth = 210; 
+        const imgWidth = 210;
         const pageHeight = 295;
-        const imgHeight = canvas.height * imgWidth / canvas.width;
+        const imgHeight = (canvas.height * imgWidth) / canvas.width;
         let heightLeft = imgHeight;
 
         const position = 0;
@@ -52,7 +49,9 @@ export class ResultComponent {
           heightLeft -= pageHeight;
         }
 
-        pdf.save(`${this.formData.lastName}-document-${new Date}.pdf`);
+        pdf.save(
+          `${this.formData.contactInfo.lastName}-document-${new Date().toISOString()}.pdf`
+        );
       });
     }
   }

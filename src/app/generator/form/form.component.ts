@@ -1,31 +1,26 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { FormGroup, ReactiveFormsModule, FormArray} from '@angular/forms';
+import { Component, EventEmitter, Output } from '@angular/core';
+import { FormGroup, ReactiveFormsModule, FormArray } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { FormService } from '../../services/form.service';
+import { FormData } from '../../constants/types';
 
 @Component({
   selector: 'app-form',
   standalone: true,
-  imports: [
-    ReactiveFormsModule,
-    CommonModule,
-  ],
+  imports: [ReactiveFormsModule, CommonModule],
   templateUrl: './form.component.html',
   styleUrls: ['./form.component.scss'],
 })
-export class FormComponent implements OnInit {
-  @Output() formData = new EventEmitter<any>();
+export class FormComponent {
+  
+  @Output() formData = new EventEmitter<FormData>();
   @Output() formSaved = new EventEmitter<void>();
   @Output() changeStep = new EventEmitter<number>();
 
   form: FormGroup;
-  
 
   constructor(private formService: FormService) {
     this.form = this.formService.createForm();
-  }
-
-  ngOnInit(): void {
   }
 
   get experience(): FormArray {
@@ -46,10 +41,6 @@ export class FormComponent implements OnInit {
 
   get projects(): FormArray {
     return this.formService.getProjectsArray(this.form);
-  }
-
-  saveForm() {
-    this.formSaved.emit();
   }
 
   addExperience(): void {
@@ -75,7 +66,7 @@ export class FormComponent implements OnInit {
   onSubmit(): void {
     if (this.form.valid) {
       this.formData.emit(this.form.value);
-      this.changeStep.emit(2);  
+      this.changeStep.emit(2);
     }
   }
 
@@ -123,12 +114,14 @@ export class FormComponent implements OnInit {
     }
   }
 
-  onFileChange(event: any): void {
-    const file = event.target.files[0];
-    if (file) {
+  onFileChange(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files.length > 0) {
+      const file = input.files[0];
       this.form.patchValue({
-        image: file
+        image: file,
       });
     }
   }
+  
 }

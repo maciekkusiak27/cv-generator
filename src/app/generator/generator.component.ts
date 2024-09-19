@@ -3,9 +3,8 @@ import { FormComponent } from './form/form.component';
 import { ResultComponent } from './result/result.component';
 import { NavigationComponent } from '../commons/navigation/navigation.component';
 import { CommonModule } from '@angular/common';
-import { mockData } from './mockData';
 import { FormService } from '../services/form.service';
-import { ContactInfo, FormData } from '../constants/types';
+import { FormData } from '../constants/types';
 
 @Component({
   selector: 'app-generator',
@@ -16,19 +15,17 @@ import { ContactInfo, FormData } from '../constants/types';
 })
 export class GeneratorComponent {
   formStep: number = 1;
-  // formStep: number = 2;
-  formData!: FormData; 
-  // formData = mockData
+  formData!: FormData;
 
-  constructor(private formService: FormService) {} 
+  constructor(private formService: FormService) {}
 
-  onFormSubmit(formData: any) {
+  public onFormSubmit(formData: FormData) {
     this.formData = formData;
-    this.formStep = 2; 
+    this.formStep = 2;
   }
 
-  onChangeStep(step: number) {
-    this.formStep = step; 
+  public onChangeStep(step: number) {
+    this.formStep = step;
   }
 
   onFileUpload(file: File): void {
@@ -53,33 +50,25 @@ export class GeneratorComponent {
       reader.readAsText(file);
     }
   }
-  
 
-  saveAsJSON(): void {
-  //   if (this.formData && this.formData.contactInfo) {
-  //     const filteredData = Object.keys(this.formData.contactInfo)
-  //       .filter(key => this.formData!.contactInfo[key as keyof ContactInfo])
-  //       .reduce((obj, key) => {
-  //         obj[key as keyof ContactInfo] = this.formData!.contactInfo[key as keyof ContactInfo];
-  //         return obj;
-  //       }, {} as Partial<ContactInfo>);
-  
-  //     const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(filteredData));
-  
-  //     // Ensuring the lastName is a string or providing a fallback
-  //     const lastName = this.formData.contactInfo.lastName || 'dane';
-      
-  //     // Ensure lastName is a string
-  //     if (typeof lastName === 'string') {
-  //       const downloadAnchor = document.createElement('a');
-  //       downloadAnchor.setAttribute("href", dataStr);
-  //       downloadAnchor.setAttribute("download", `${lastName}-cv.json`);
-  //       document.body.appendChild(downloadAnchor);
-  //       downloadAnchor.click();
-  //       downloadAnchor.remove();
-  //     } else {
-  //       console.error('lastName is not a string');
-  //     }
-  //   }
+  public saveAsJSON() {
+    if (!this.formData) {
+      console.error('Form data is not available');
+      alert('Nie można zapisać, ponieważ dane formularza są puste.');
+      return;
+    }
+
+    const dataStr =
+      'data:text/json;charset=utf-8,' +
+      encodeURIComponent(JSON.stringify(this.formData));
+    const downloadAnchor = document.createElement('a');
+    downloadAnchor.setAttribute('href', dataStr);
+    downloadAnchor.setAttribute(
+      'download',
+      `${this.formData.contactInfo?.lastName || 'formularz'}-dane-cv.json`
+    );
+    document.body.appendChild(downloadAnchor);
+    downloadAnchor.click();
+    downloadAnchor.remove();
   }
 }

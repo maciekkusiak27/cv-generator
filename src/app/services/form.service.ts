@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
+import { FormData } from '../constants/types';
 
 @Injectable({
   providedIn: 'root'
@@ -35,23 +36,23 @@ export class FormService {
     });
   }
 
-  populateForm(data: any): void {
-    if (this.form) {
+  populateForm(data: FormData): void {
+    if (this.form && data.contactInfo) {  
       this.form.patchValue({
         contactInfo: {
-          firstName: data.firstName || '',
-          lastName: data.lastName || '',
-          email: data.email || '',
-          position: data.position || '',
-          phone: data.phone || '',
-          location: data.location || '',
-          github: data.github || '',
-          linkedin: data.linkedin || '',
-          website: data.website || '',
-          image: data.image || null,
-        },
+          firstName: data.contactInfo.firstName || '',
+          lastName: data.contactInfo.lastName || '',
+          email: data.contactInfo.email || '',
+          position: data.contactInfo.position || '',
+          phone: data.contactInfo.phone || '',
+          location: data.contactInfo.location || '',
+          github: data.contactInfo.github || '',
+          linkedin: data.contactInfo.linkedin || '',
+          website: data.contactInfo.website || '',
+          image: data.contactInfo.image || null,
+        }
       });
-
+  
       this.setFormArray('languages', data.languages, this.createLanguage.bind(this));
       this.setFormArray('experience', data.experience, this.createExperience.bind(this));
       this.setFormArray('education', data.education, this.createEducation.bind(this));
@@ -59,21 +60,27 @@ export class FormService {
       this.setFormArray('projects', data.projects, this.createProject.bind(this));
     }
   }
+  
 
-  private setFormArray(controlName: string, values: any[], createFn: () => FormGroup): void {
+  private setFormArray<T extends { [key: string]: any }>(
+    controlName: string,
+    values: T[],
+    createFn: () => FormGroup
+  ): void {
     const formArray = this.form.get(controlName) as FormArray;
     formArray.clear();
-
+  
     if (values && values.length) {
       values.forEach(value => {
         const group = createFn();
-        group.patchValue(value);
+        group.patchValue(value);  
         formArray.push(group);
       });
     } else {
       formArray.push(createFn());
     }
   }
+  
 
   createLanguage(): FormGroup {
     return this.fb.group({

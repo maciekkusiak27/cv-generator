@@ -3,10 +3,10 @@
   (ngSubmit)="onSubmit()"
   class="space-y8 p-6 max-w-4xl mx-auto"
 >
-  <!-- Contact Information Section -->
+
   <h4 class="text-xl font-semibold mb-4">Contact Information</h4>
   <div formGroupName="contactInfo" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-    <!-- Add input fields for general information -->
+
     <div
       class="form-group"
       *ngFor="
@@ -56,9 +56,9 @@
     </div>
   </div>
 
-  <!-- Experience Section -->
+  
   <h4 class="text-xl font-semibold mt-8 mb-4">Experience</h4>
-  <div formArrayName="experience" class="space-y-4">
+ <div formArrayName="experience" class="space-y-4">
     <div
       *ngFor="let exp of experience.controls; let i = index"
       [formGroupName]="i"
@@ -71,7 +71,7 @@
       >
         <i class="fa fa-times"></i>
       </button>
-      <!-- Experience fields -->
+      
       <div class="form-group">
         <label
           for="companyName-{{ i }}"
@@ -178,7 +178,6 @@
     </button>
   </div>
 
-  <!-- Education Section -->
   <h4 class="text-xl font-semibold mt-8 mb-4">Education</h4>
   <div formArrayName="education" class="space-y-4">
     <div
@@ -193,7 +192,7 @@
       >
         <i class="fa fa-times"></i>
       </button>
-      <!-- Education fields -->
+      
       <div class="form-group">
         <label
           for="institution-{{ i }}"
@@ -291,7 +290,6 @@
     </button>
   </div>
 
-  <!-- Courses Section -->
   <h4 class="text-xl font-semibold mt-8 mb-4">Courses</h4>
   <div formArrayName="courses" class="space-y-4">
     <div
@@ -306,7 +304,7 @@
       >
         <i class="fa fa-times"></i>
       </button>
-      <!-- Courses fields -->
+
       <div class="form-group">
         <label
           for="course-{{ i }}"
@@ -346,7 +344,6 @@
     </button>
   </div>
 
-  <!-- Projects Section -->
   <h4 class="text-xl font-semibold mt-8 mb-4">Projects</h4>
   <div formArrayName="projects" class="space-y-4">
     <div
@@ -361,7 +358,7 @@
       >
         <i class="fa fa-times"></i>
       </button>
-      <!-- Projects fields -->
+
       <div class="form-group">
         <label
           for="project-{{ i }}"
@@ -416,7 +413,6 @@
     </button>
   </div>
 
-  <!-- Languages Section -->
   <h4 class="text-xl font-semibold mt-8 mb-4">Languages</h4>
   <div formArrayName="languages" class="space-y-4">
     <div
@@ -431,7 +427,7 @@
       >
         <i class="fa fa-times"></i>
       </button>
-      <!-- Languages fields -->
+      
       <div class="form-group">
         <label
           for="language-{{ i }}"
@@ -471,7 +467,6 @@
     </button>
   </div>
 
-  <!-- Submit Button -->
   <div class="mt-8">
     <button
       type="submit"
@@ -482,7 +477,7 @@
     <button
       type="button"
       class="bg-orange-500 text-white py-2 px-4 rounded ml-2"
-      (click)="saveForm()"
+      (click)="this.formSaved.emit()"
     >
       Save form
     </button>
