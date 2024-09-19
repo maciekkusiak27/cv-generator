@@ -1,17 +1,35 @@
 <div class="flex flex-col h-screen">
-  <app-navigation [formStep]="formStep" (fileUploaded)="onFileUpload($event)"></app-navigation>
+  <app-navigation
+    [formStep]="formStep"
+    (fileUploaded)="onFileUpload($event)"
+  ></app-navigation>
   <div class="flex-1 flex items-center justify-center p-8 bg-white">
     <ng-container [ngSwitch]="formStep">
       <app-form
+        class="flex-1"
         *ngSwitchCase="1"
         (formData)="onFormSubmit($event)"
         (formSaved)="saveAsJSON()"
-        (changeStep)="onChangeStep($event)">
+        (changeStep)="onChangeStep($event)"
+      >
       </app-form>
+      <div *ngSwitchCase="1" class="flex-1">
+        <app-result-prev
+          [contactInfo]="formData?.contactInfo"
+          [experience]="formData?.experience"
+          [education]="formData?.education"
+          [courses]="formData?.courses"
+          [projects]="formData?.projects"
+          [languages]="formData?.languages"
+          class="fixed top-0 right-0 h-screen overflow-y-auto scale-50"
+        ></app-result-prev>
+      </div>
+
       <app-result
         *ngSwitchCase="2"
         [formData]="formData"
-        (changeStep)="onChangeStep($event)">
+        (changeStep)="onChangeStep($event)"
+      >
       </app-result>
     </ng-container>
   </div>

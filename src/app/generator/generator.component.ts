@@ -6,11 +6,12 @@ import { CommonModule } from '@angular/common';
 import { mockData } from './mockData';
 import { FormService } from '../services/form.service';
 import { ContactInfo, FormData } from '../constants/types';
+import { ResultPrevComponent } from './result-prev/result-prev.component';
 
 @Component({
   selector: 'app-generator',
   standalone: true,
-  imports: [FormComponent, ResultComponent, NavigationComponent, CommonModule],
+  imports: [FormComponent, ResultComponent, NavigationComponent, CommonModule, ResultPrevComponent],
   templateUrl: './generator.component.html',
   styleUrl: './generator.component.scss',
 })
