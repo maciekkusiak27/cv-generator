@@ -3,11 +3,17 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import html2canvas from 'html2canvas';
 import { jsPDF } from 'jspdf';
 import { FormData } from '../../constants/types';
+import { ContactDetailsPrevComponent } from './contact-details-prev/contact-details-prev.component';
+import { MainContentPrevComponent } from './main-content-prev/main-content-prev.component';
 
 @Component({
   selector: 'app-result',
   standalone: true,
-  imports: [CommonModule],
+  imports: [
+    CommonModule,
+    ContactDetailsPrevComponent,
+    MainContentPrevComponent,
+  ],
   templateUrl: './result.component.html',
   styleUrls: ['./result.component.scss'],
 })
@@ -15,16 +21,12 @@ export class ResultComponent {
   @Input() formData!: FormData;
   @Output() changeStep = new EventEmitter<number>();
   @Output() formSaved = new EventEmitter<void>();
-  @Output() formDataChange = new EventEmitter<FormData>(); 
+  @Output() formDataChange = new EventEmitter<FormData>();
 
   public editForm(): void {
     this.formDataChange.emit(this.formData);
     this.changeStep.emit(1);
   }
-
-ngOnInit(){
-  console.log(this.formData)
-}
 
   public generatePDF(): void {
     const pdf = new jsPDF();
@@ -50,7 +52,9 @@ ngOnInit(){
         }
 
         pdf.save(
-          `${this.formData.contactInfo.lastName}-document-${new Date().toISOString()}.pdf`
+          `${
+            this.formData.contactInfo.lastName
+          }-document-${new Date().toISOString()}.pdf`
         );
       });
     }
