@@ -1,21 +1,10 @@
 <div class="flex gap-8 flex-col">
-  <div class="space-x-4">
-    <button class="bg-blue-500 text-white py-2 px-4 rounded" (click)="editForm()">
-      Edit
-    </button>
-    <button
-      class="bg-green-500 text-white py-2 px-4 rounded"
-      (click)="generatePDF()"
-    >
-      Generate PDF
-    </button>
-    <button
-      class="bg-orange-500 text-white py-2 px-4 rounded"
-      (click)="this.formSaved.emit()"
-    >
-      Save form
-    </button>
-  </div>
+  <app-operation-buttons
+    [formData]="formData"
+    [formStep]="formStep"
+    (formSaved)="onSave()"
+    (changeStep)="changeStep.emit($event)"
+  ></app-operation-buttons>
 
   <div
     id="pdf-content"

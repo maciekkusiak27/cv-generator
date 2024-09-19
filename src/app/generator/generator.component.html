@@ -2,6 +2,7 @@
   <app-navigation
     [formStep]="formStep"
     (fileUploaded)="onFileUpload($event)"
+    (stepBack)="navigateBack()"
   ></app-navigation>
   <div class="flex-1 flex items-center justify-center p-8 bg-white">
     <ng-container [ngSwitch]="formStep">
@@ -14,11 +15,11 @@
       </app-form>
       <app-result
         *ngSwitchCase="2"
+        [formStep]="formStep"
         [formData]="formData"
         (changeStep)="onChangeStep($event)"
         (formSaved)="saveAsJSON()"
-      >
-      </app-result>
+      ></app-result>
     </ng-container>
   </div>
 </div>

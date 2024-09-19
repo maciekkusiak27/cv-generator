@@ -11,27 +11,32 @@ import { Router } from '@angular/router';
 export class NavigationComponent {
   @Input()
   formStep!: Number;
-  @Output() fileUploaded = new EventEmitter<any>();
+  @Output() fileUploaded = new EventEmitter<File>();
+  @Output() stepBack = new EventEmitter<void>(); 
+
 
   constructor(private router: Router) {}
 
-  navigateBack() {
-    this.router.navigate(['/']); 
+  public navigateBack() {
+    if (this.formStep === 1) {
+      this.router.navigate(['/']);
+    } else {
+      this.stepBack.emit(); 
+    }
   }
 
   triggerFileInput() {
     const fileInput = document.getElementById('fileInput') as HTMLInputElement;
     if (fileInput) {
-      fileInput.click(); 
+      fileInput.click();
     }
   }
 
-
-  onFileChange(event: any): void {
-    const file = event.target.files[0];
+  onFileChange(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    const file = input.files?.[0];
     if (file) {
-      this.fileUploaded.emit(file); 
+      this.fileUploaded.emit(file);
     }
   }
-  
 }

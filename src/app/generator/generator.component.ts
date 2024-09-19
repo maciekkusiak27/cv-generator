@@ -28,7 +28,13 @@ export class GeneratorComponent {
     this.formStep = step;
   }
 
-  onFileUpload(file: File): void {
+  public navigateBack() {
+    if (this.formStep > 1) {
+      this.formStep--; 
+    }
+  }
+
+  public onFileUpload(file: File): void {
     if (file) {
       const reader = new FileReader();
       reader.onload = (e: ProgressEvent<FileReader>) => {
