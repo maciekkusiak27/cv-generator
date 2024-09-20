@@ -1,53 +1,34 @@
 <form
   [formGroup]="form"
   (ngSubmit)="onSubmit()"
-  class="space-y8 p-6 max-w-4xl mx-auto"
+  class="space-y-8 p-6 mx-auto"
 >
 
-  <h4 class="text-xl font-semibold mb-4">Contact Information</h4>
+  <h4 class="text-xl font-semibold mb-4">{{ 'CONTACT_INFO' | translate }}</h4>
   <div formGroupName="contactInfo" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
 
     <div
-      class="form-group"
-      *ngFor="
-        let field of [
-          'firstName',
-          'lastName',
-          'email',
-          'position',
-          'phone',
-          'location',
-          'github',
-          'linkedin',
-          'website'
-        ]
-      "
+    class="form-group"
+    *ngFor="let field of ['firstName', 'lastName', 'email', 'position', 'phone', 'location', 'github', 'linkedin', 'website']"
+  >
+    <label [for]="field" class="block text-sm font-medium text-gray-700">{{ field | translate }}</label>
+    <input
+      [id]="field"
+      [formControlName]="field"
+      [type]="field === 'email' ? 'email' : 'text'"
+      [placeholder]="field | translate"
+      class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+    />
+    <p
+      *ngIf="form.get('contactInfo')?.get(field)?.invalid && form.get('contactInfo')?.get(field)?.touched"
+      class="text-red-500 text-sm"
     >
-      <label [for]="field" class="block text-sm font-medium text-gray-700">{{
-        field | titlecase
-      }}</label>
-      <input
-        [id]="field"
-        [formControlName]="field"
-        [type]="field === 'email' ? 'email' : 'text'"
-        [placeholder]="field | titlecase"
-        class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-      />
-      <p
-        *ngIf="
-          form.get('contactInfo')?.get(field)?.invalid &&
-          form.get('contactInfo')?.get(field)?.touched
-        "
-        class="text-red-500 text-sm"
-      >
-        {{ field | titlecase }} is required
-      </p>
-    </div>
-
+      {{ 'REQUIRED' | translate: { field: (field | titlecase) } }}
+    </p>
+  </div>
+  
     <div class="form-group col-span-full">
-      <label class="block text-sm font-medium text-gray-700"
-        >Upload Image</label
-      >
+      <label class="block text-sm font-medium text-gray-700">{{ 'UPLOAD_IMAGE' | translate }}</label>
       <input
         type="file"
         (change)="onFileChange($event)"
@@ -56,9 +37,8 @@
     </div>
   </div>
 
-  
-  <h4 class="text-xl font-semibold mt-8 mb-4">Experience</h4>
- <div formArrayName="experience" class="space-y-4">
+  <h4 class="text-xl font-semibold mt-8 mb-4">{{ 'EXPERIENCE' | translate }}</h4>
+  <div formArrayName="experience" class="space-y-4">
     <div
       *ngFor="let exp of experience.controls; let i = index"
       [formGroupName]="i"
@@ -73,41 +53,29 @@
       </button>
       
       <div class="form-group">
-        <label
-          for="companyName-{{ i }}"
-          class="block text-sm font-medium text-gray-700"
-          >Company Name</label
-        >
+        <label for="companyName-{{ i }}" class="block text-sm font-medium text-gray-700">{{ 'COMPANY_NAME' | translate }}</label>
         <input
           id="companyName-{{ i }}"
           formControlName="companyName"
           type="text"
-          placeholder="Company Name"
+          placeholder="{{ 'COMPANY_NAME' | translate }}"
           class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
         />
       </div>
 
       <div class="form-group">
-        <label
-          for="position-{{ i }}"
-          class="block text-sm font-medium text-gray-700"
-          >Position</label
-        >
+        <label for="position-{{ i }}" class="block text-sm font-medium text-gray-700">{{ 'POSITION' | translate }}</label>
         <input
           id="position-{{ i }}"
           formControlName="position"
           type="text"
-          placeholder="Position"
+          placeholder="{{ 'POSITION' | translate }}"
           class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
         />
       </div>
 
       <div class="form-group">
-        <label
-          for="fromDate-{{ i }}"
-          class="block text-sm font-medium text-gray-700"
-          >From</label
-        >
+        <label for="fromDate-{{ i }}" class="block text-sm font-medium text-gray-700">{{ 'FROM' | translate }}</label>
         <input
           id="fromDate-{{ i }}"
           formControlName="fromDate"
@@ -117,18 +85,12 @@
       </div>
 
       <div class="form-group">
-        <label
-          for="toDate-{{ i }}"
-          class="block text-sm font-medium text-gray-700"
-          >To</label
-        >
+        <label for="toDate-{{ i }}" class="block text-sm font-medium text-gray-700">{{ 'TO' | translate }}</label>
         <input
           id="toDate-{{ i }}"
           formControlName="toDate"
           type="date"
-          [attr.disabled]="
-            experience.at(i).get('currently')?.value ? true : null
-          "
+          [attr.disabled]="experience.at(i).get('currently')?.value ? true : null"
           class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
         />
         <input
@@ -148,23 +110,17 @@
             (change)="onCurrentlyChange(i)"
             class="h-4 w-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500"
           />
-          <span class="ml-2 text-sm font-medium text-gray-700"
-            >Currently Working</span
-          >
+          <span class="ml-2 text-sm font-medium text-gray-700">{{ 'CURRENTLY_WORKING' | translate }}</span>
         </label>
       </div>
 
       <div class="form-group">
-        <label
-          for="description-{{ i }}"
-          class="block text-sm font-medium text-gray-700"
-          >Description</label
-        >
+        <label for="description-{{ i }}" class="block text-sm font-medium text-gray-700">{{ 'DESCRIPTION' | translate }}</label>
         <textarea
           id="description-{{ i }}"
           formControlName="description"
           rows="3"
-          placeholder="Job Description"
+          placeholder="{{ 'DESCRIPTION' | translate }}"
           class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
         ></textarea>
       </div>
@@ -174,11 +130,11 @@
       (click)="addExperience()"
       class="px-4 py-2 bg-indigo-600 text-white rounded-md shadow-sm hover:bg-indigo-700"
     >
-      Add Experience
+      {{ 'ADD_EXPERIENCE' | translate }}
     </button>
   </div>
 
-  <h4 class="text-xl font-semibold mt-8 mb-4">Education</h4>
+  <h4 class="text-xl font-semibold mt-8 mb-4">{{ 'EDUCATION' | translate }}</h4>
   <div formArrayName="education" class="space-y-4">
     <div
       *ngFor="let edu of education.controls; let i = index"
@@ -194,56 +150,40 @@
       </button>
       
       <div class="form-group">
-        <label
-          for="institution-{{ i }}"
-          class="block text-sm font-medium text-gray-700"
-          >Institution</label
-        >
+        <label for="institution-{{ i }}" class="block text-sm font-medium text-gray-700">{{ 'INSTITUTION' | translate }}</label>
         <input
           id="institution-{{ i }}"
           formControlName="institution"
           type="text"
-          placeholder="Institution"
+          placeholder="{{ 'INSTITUTION' | translate }}"
           class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
         />
       </div>
 
       <div class="form-group">
-        <label
-          for="degree-{{ i }}"
-          class="block text-sm font-medium text-gray-700"
-          >Degree</label
-        >
+        <label for="degree-{{ i }}" class="block text-sm font-medium text-gray-700">{{ 'DEGREE' | translate }}</label>
         <input
           id="degree-{{ i }}"
           formControlName="degree"
           type="text"
-          placeholder="Degree"
+          placeholder="{{ 'DEGREE' | translate }}"
           class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
         />
       </div>
 
       <div class="form-group">
-        <label
-          for="fieldOfStudy-{{ i }}"
-          class="block text-sm font-medium text-gray-700"
-          >Field of Study</label
-        >
+        <label for="fieldOfStudy-{{ i }}" class="block text-sm font-medium text-gray-700">{{ 'FIELD_OF_STUDY' | translate }}</label>
         <input
           id="fieldOfStudy-{{ i }}"
           formControlName="fieldOfStudy"
           type="text"
-          placeholder="Field of Study"
+          placeholder="{{ 'FIELD_OF_STUDY' | translate }}"
           class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
         />
       </div>
 
       <div class="form-group">
-        <label
-          for="startDate-{{ i }}"
-          class="block text-sm font-medium text-gray-700"
-          >Start Date</label
-        >
+        <label for="startDate-{{ i }}" class="block text-sm font-medium text-gray-700">{{ 'START_DATE' | translate }}</label>
         <input
           id="startDate-{{ i }}"
           formControlName="startDate"
@@ -253,11 +193,7 @@
       </div>
 
       <div class="form-group">
-        <label
-          for="endDate-{{ i }}"
-          class="block text-sm font-medium text-gray-700"
-          >End Date</label
-        >
+        <label for="endDate-{{ i }}" class="block text-sm font-medium text-gray-700">{{ 'END_DATE' | translate }}</label>
         <input
           id="endDate-{{ i }}"
           formControlName="endDate"
@@ -267,16 +203,12 @@
       </div>
 
       <div class="form-group">
-        <label
-          for="description-{{ i }}"
-          class="block text-sm font-medium text-gray-700"
-          >Description</label
-        >
+        <label for="description-{{ i }}" class="block text-sm font-medium text-gray-700">{{ 'DESCRIPTION' | translate }}</label>
         <textarea
           id="description-{{ i }}"
           formControlName="description"
           rows="3"
-          placeholder="Description"
+          placeholder="{{ 'DESCRIPTION' | translate }}"
           class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
         ></textarea>
       </div>
@@ -286,11 +218,11 @@
       (click)="addEducation()"
       class="px-4 py-2 bg-indigo-600 text-white rounded-md shadow-sm hover:bg-indigo-700"
     >
-      Add Education
+      {{ 'ADD_EDUCATION' | translate }}
     </button>
   </div>
 
-  <h4 class="text-xl font-semibold mt-8 mb-4">Courses</h4>
+  <h4 class="text-xl font-semibold mt-8 mb-4">{{ 'COURSES' | translate }}</h4>
   <div formArrayName="courses" class="space-y-4">
     <div
       *ngFor="let course of courses.controls; let i = index"
@@ -306,31 +238,23 @@
       </button>
 
       <div class="form-group">
-        <label
-          for="course-{{ i }}"
-          class="block text-sm font-medium text-gray-700"
-          >Course</label
-        >
+        <label for="course-{{ i }}" class="block text-sm font-medium text-gray-700">{{ 'COURSE' | translate }}</label>
         <input
           id="course-{{ i }}"
           formControlName="course"
           type="text"
-          placeholder="Course"
+          placeholder="{{ 'COURSE' | translate }}"
           class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
         />
       </div>
 
       <div class="form-group">
-        <label
-          for="description-{{ i }}"
-          class="block text-sm font-medium text-gray-700"
-          >Description</label
-        >
+        <label for="description-{{ i }}" class="block text-sm font-medium text-gray-700">{{ 'DESCRIPTION' | translate }}</label>
         <textarea
           id="description-{{ i }}"
           formControlName="description"
           rows="3"
-          placeholder="Description"
+          placeholder="{{ 'DESCRIPTION' | translate }}"
           class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
         ></textarea>
       </div>
@@ -340,11 +264,11 @@
       (click)="addCourse()"
       class="px-4 py-2 bg-indigo-600 text-white rounded-md shadow-sm hover:bg-indigo-700"
     >
-      Add Course
+      {{ 'ADD_COURSE' | translate }}
     </button>
   </div>
 
-  <h4 class="text-xl font-semibold mt-8 mb-4">Projects</h4>
+  <h4 class="text-xl font-semibold mt-8 mb-4">{{ 'PROJECTS' | translate }}</h4>
   <div formArrayName="projects" class="space-y-4">
     <div
       *ngFor="let project of projects.controls; let i = index"
@@ -360,46 +284,34 @@
       </button>
 
       <div class="form-group">
-        <label
-          for="project-{{ i }}"
-          class="block text-sm font-medium text-gray-700"
-          >Project</label
-        >
+        <label for="project-{{ i }}" class="block text-sm font-medium text-gray-700">{{ 'PROJECT' | translate }}</label>
         <input
           id="project-{{ i }}"
           formControlName="project"
           type="text"
-          placeholder="Project"
+          placeholder="{{ 'PROJECT' | translate }}"
           class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
         />
       </div>
 
       <div class="form-group">
-        <label
-          for="description-{{ i }}"
-          class="block text-sm font-medium text-gray-700"
-          >Description</label
-        >
+        <label for="description-{{ i }}" class="block text-sm font-medium text-gray-700">{{ 'DESCRIPTION' | translate }}</label>
         <textarea
           id="description-{{ i }}"
           formControlName="description"
           rows="3"
-          placeholder="Description"
+          placeholder="{{ 'DESCRIPTION' | translate }}"
           class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
         ></textarea>
       </div>
 
       <div class="form-group">
-        <label
-          for="link-{{ i }}"
-          class="block text-sm font-medium text-gray-700"
-          >Link</label
-        >
+        <label for="link-{{ i }}" class="block text-sm font-medium text-gray-700">{{ 'LINK' | translate }}</label>
         <input
           id="link-{{ i }}"
           formControlName="link"
           type="text"
-          placeholder="Link"
+          placeholder="{{ 'LINK' | translate }}"
           class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
         />
       </div>
@@ -409,11 +321,11 @@
       (click)="addProject()"
       class="px-4 py-2 bg-indigo-600 text-white rounded-md shadow-sm hover:bg-indigo-700"
     >
-      Add Project
+      {{ 'ADD_PROJECT' | translate }}
     </button>
   </div>
 
-  <h4 class="text-xl font-semibold mt-8 mb-4">Languages</h4>
+  <h4 class="text-xl font-semibold mt-8 mb-4">{{ 'LANGUAGES' | translate }}</h4>
   <div formArrayName="languages" class="space-y-4">
     <div
       *ngFor="let language of languages.controls; let i = index"
@@ -429,31 +341,23 @@
       </button>
       
       <div class="form-group">
-        <label
-          for="language-{{ i }}"
-          class="block text-sm font-medium text-gray-700"
-          >Language</label
-        >
+        <label for="language-{{ i }}" class="block text-sm font-medium text-gray-700">{{ 'LANGUAGE' | translate }}</label>
         <input
           id="language-{{ i }}"
           formControlName="language"
           type="text"
-          placeholder="Language"
+          placeholder="{{ 'LANGUAGE' | translate }}"
           class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
         />
       </div>
 
       <div class="form-group">
-        <label
-          for="level-{{ i }}"
-          class="block text-sm font-medium text-gray-700"
-          >Level</label
-        >
+        <label for="level-{{ i }}" class="block text-sm font-medium text-gray-700">{{ 'LEVEL' | translate }}</label>
         <input
           id="level-{{ i }}"
           formControlName="level"
           type="text"
-          placeholder="Level"
+          placeholder="{{ 'LEVEL' | translate }}"
           class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
         />
       </div>
@@ -463,7 +367,7 @@
       (click)="addLanguage()"
       class="px-4 py-2 bg-indigo-600 text-white rounded-md shadow-sm hover:bg-indigo-700"
     >
-      Add Language
+      {{ 'ADD_LANGUAGE' | translate }}
     </button>
   </div>
 
@@ -472,14 +376,14 @@
       type="submit"
       class="px-4 py-2 bg-indigo-600 text-white rounded-md shadow-sm hover:bg-indigo-700"
     >
-      Submit
+      {{ 'SUBMIT' | translate }}
     </button>
     <button
       type="button"
       class="bg-orange-500 text-white py-2 px-4 rounded ml-2"
       (click)="this.formSaved.emit()"
     >
-      Save form
+      {{ 'SAVE_FORM' | translate }}
     </button>
   </div>
 </form>

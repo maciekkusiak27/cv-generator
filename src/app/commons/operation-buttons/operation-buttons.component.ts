@@ -3,12 +3,13 @@ import html2canvas from 'html2canvas';
 import { FormData } from '../../constants/types';
 import { CommonModule } from '@angular/common';
 import { jsPDF } from 'jspdf';
+import { TranslateModule } from '@ngx-translate/core';
 
 
 @Component({
   selector: 'app-operation-buttons',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, TranslateModule],
   templateUrl: './operation-buttons.component.html',
 })
 export class OperationButtonsComponent {

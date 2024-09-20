@@ -3,16 +3,16 @@ import { FormGroup, ReactiveFormsModule, FormArray } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { FormService } from '../../services/form.service';
 import { FormData } from '../../constants/types';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-form',
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule],
+  imports: [ReactiveFormsModule, CommonModule, TranslateModule],
   templateUrl: './form.component.html',
   styleUrls: ['./form.component.scss'],
 })
 export class FormComponent {
-  
   @Output() formData = new EventEmitter<FormData>();
   @Output() formSaved = new EventEmitter<void>();
   @Output() changeStep = new EventEmitter<number>();

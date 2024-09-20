@@ -1,11 +1,12 @@
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Router } from '@angular/router';
+import { LanguageSwitcherComponent } from '../language-switcher/language-switcher.component';
 
 @Component({
   selector: 'app-navigation',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, LanguageSwitcherComponent],
   templateUrl: './navigation.component.html',
 })
 export class NavigationComponent {

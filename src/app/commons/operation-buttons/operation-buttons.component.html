@@ -1,18 +1,18 @@
 <div class="space-x-4">
-    <button class="bg-blue-500 text-white py-2 px-4 rounded" (click)="editForm()">
-      Edit
-    </button>
-    <button
-      class="bg-green-500 text-white py-2 px-4 rounded"
-      (click)="generatePDF()"
-    >
-      Generate PDF
-    </button>
-    <button
+  <button class="bg-blue-500 text-white py-2 px-4 rounded" (click)="editForm()">
+    {{ 'EDIT' | translate }}
+  </button>
+  <button
+    class="bg-green-500 text-white py-2 px-4 rounded"
+    (click)="generatePDF()"
+  >
+    {{ 'GENERATE_PDF' | translate }}
+  </button>
+  <button
     *ngIf="formStep === 2"
-      class="bg-orange-500 text-white py-2 px-4 rounded"
-      (click)="this.formSaved.emit()"
-    >
-      Save form
-    </button>
-  </div>
+    class="bg-orange-500 text-white py-2 px-4 rounded"
+    (click)="this.formSaved.emit()"
+  >
+    {{ 'SAVE_FORM' | translate }}
+  </button>
+</div>

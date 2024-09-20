@@ -5,11 +5,18 @@ import { NavigationComponent } from '../commons/navigation/navigation.component'
 import { CommonModule } from '@angular/common';
 import { FormService } from '../services/form.service';
 import { FormData } from '../constants/types';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-generator',
   standalone: true,
-  imports: [FormComponent, ResultComponent, NavigationComponent, CommonModule],
+  imports: [
+    FormComponent,
+    ResultComponent,
+    NavigationComponent,
+    CommonModule,
+    TranslateModule
+  ],
   templateUrl: './generator.component.html',
   styleUrl: './generator.component.scss',
 })
@@ -30,7 +37,7 @@ export class GeneratorComponent {
 
   public navigateBack() {
     if (this.formStep > 1) {
-      this.formStep--; 
+      this.formStep--;
     }
   }
 
