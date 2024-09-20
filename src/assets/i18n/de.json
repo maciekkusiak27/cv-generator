@@ -1,6 +1,10 @@
 {
   "CONTACT_INFO": "Kontaktinformation",
   "CONTACT": "Kontakt",
+  "CLOSE": "Schließen",
+  "ERROR": "Fehler",
+  "ERROR_REQUIRED": "{{field}} ist erforderlich.",
+  "ERROR_INVALID": "{{field}} ist ungültig.",
   "UPLOAD_IMAGE": "Bild hochladen",
   "EXPERIENCE": "Erfahrung",
   "EDUCATION": "Bildung",

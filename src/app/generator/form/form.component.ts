@@ -1,9 +1,11 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormGroup, ReactiveFormsModule, FormArray } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { FormService } from '../../services/form.service';
 import { FormData } from '../../constants/types';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { MatDialog } from '@angular/material/dialog';
+import { ErrorDialogComponent } from '../../commons/error-dialog/error-dialog.component';
 
 @Component({
   selector: 'app-form',
@@ -12,16 +14,18 @@ import { TranslateModule } from '@ngx-translate/core';
   templateUrl: './form.component.html',
   styleUrls: ['./form.component.scss'],
 })
-export class FormComponent {
+export class FormComponent implements OnInit {
   @Output() formData = new EventEmitter<FormData>();
   @Output() formSaved = new EventEmitter<void>();
   @Output() changeStep = new EventEmitter<number>();
 
-  form: FormGroup;
+  form!: FormGroup;
 
-  constructor(private formService: FormService) {
-    this.form = this.formService.createForm();
-  }
+  constructor(
+    private formService: FormService,
+    private dialog: MatDialog,
+    private translate: TranslateService
+  ) {}
 
   get experience(): FormArray {
     return this.formService.getExperienceArray(this.form);
@@ -41,6 +45,10 @@ export class FormComponent {
 
   get projects(): FormArray {
     return this.formService.getProjectsArray(this.form);
+  }
+
+  ngOnInit(): void {
+    this.form = this.formService.createForm();
   }
 
   addExperience(): void {
@@ -67,7 +75,41 @@ export class FormComponent {
     if (this.form.valid) {
       this.formData.emit(this.form.value);
       this.changeStep.emit(2);
+    } else {
+      this._showValidationErrors();
     }
+  }
+
+  private _showValidationErrors(): void {
+    const errors: string[] = [];
+    Object.keys(this.form.controls).forEach((field) => {
+      const control = this.form.get(field);
+      if (control instanceof FormGroup) {
+        Object.keys(control.controls).forEach((subField) => {
+          if (control.get(subField)?.invalid) {
+            errors.push(
+              this.translate.instant(
+                control.get(subField)?.hasError('required')
+                  ? 'ERROR_REQUIRED'
+                  : 'ERROR_INVALID',
+                { field: subField }
+              )
+            );
+          }
+        });
+      } else if (control?.invalid) {
+        errors.push(
+          this.translate.instant(
+            control.hasError('required') ? 'ERROR_REQUIRED' : 'ERROR_INVALID',
+            { field }
+          )
+        );
+      }
+    });
+
+    this.dialog.open(ErrorDialogComponent, {
+      data: { errors },
+    });
   }
 
   removeLanguage(index: number): void {
@@ -123,5 +165,4 @@ export class FormComponent {
       });
     }
   }
-  
 }
